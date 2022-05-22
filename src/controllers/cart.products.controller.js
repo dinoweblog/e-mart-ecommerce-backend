@@ -8,6 +8,30 @@ const User = require("../models/user.model");
 
 const router = express.Router();
 
+router.delete("/items/delete/:id", authenticate, async (req, res) => {
+  try {
+    const cart = await Cart.findByIdAndDelete(req.params.id);
+
+    return res.status(201).send(cart);
+  } catch (err) {
+    return res.status(500).send({ error: err.message });
+  }
+});
+
+router.patch("/items/update/:id", authenticate, async (req, res) => {
+  try {
+    const cart = await Cart.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    })
+      .lean()
+      .exec();
+
+    return res.status(201).send(cart);
+  } catch (err) {
+    return res.status(500).send({ error: err.message });
+  }
+});
+
 router.get("/items/:id", authenticate, async (req, res) => {
   try {
     const id = req.params.id;
@@ -45,30 +69,6 @@ router.get("/items", authenticate, async (req, res) => {
     return res.send({ cart });
   } catch (err) {
     return res.status(500).send(err);
-  }
-});
-
-router.delete("/items/delete/:id", authenticate, async (req, res) => {
-  try {
-    const cart = await Cart.findByIdAndDelete(req.params.id);
-
-    return res.status(201).send(cart);
-  } catch (err) {
-    return res.status(500).send({ error: err.message });
-  }
-});
-
-router.patch("/items/update/:id", authenticate, async (req, res) => {
-  try {
-    const cart = await Cart.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    })
-      .lean()
-      .exec();
-
-    return res.status(201).send(cart);
-  } catch (err) {
-    return res.status(500).send({ error: err.message });
   }
 });
 
