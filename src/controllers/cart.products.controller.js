@@ -32,7 +32,7 @@ router.get("/items/:id", authenticate, async (req, res) => {
       cartitems.push(cart[0]);
     }
 
-    return res.send({ qty, cartitems, itemQty });
+    return res.send({ qty, cartitems, itemQty, cart });
   } catch (err) {
     return res.status(500).send(err);
   }
