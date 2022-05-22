@@ -16,11 +16,13 @@ router.get("/items/:id", authenticate, async (req, res) => {
     const user_id = user._id;
     let qty = 0;
     let cartitems = [];
+    let itemQty = [];
 
     const cart = await Cart.find({ userId: user_id }).lean().exec();
     console.log(cart);
     if (cart.length > 1) {
       for (let i = 0; i < cart.length; i++) {
+        itemQty.push(cart[i].quantity);
         qty += cart[i].quantity;
         const item = await Product.findById(cart[i].productId).lean().exec();
         cartitems.push(item);
@@ -30,7 +32,7 @@ router.get("/items/:id", authenticate, async (req, res) => {
       cartitems.push(cart[0]);
     }
 
-    return res.send({ qty, cartitems });
+    return res.send({ qty, cartitems, itemQty });
   } catch (err) {
     return res.status(500).send(err);
   }
