@@ -3,6 +3,7 @@ const cors = require("cors");
 const { register, login } = require("./controllers/auth.controller");
 const productController = require("./controllers/products.controller");
 const cartProductController = require("./controllers/cart.products.controller");
+const addressController = require("./controllers/user.address.controller");
 
 const app = express();
 
@@ -16,5 +17,6 @@ app.post("/login", login);
 
 app.use("/products", productController);
 app.use("/cart", cartProductController);
+app.use("/user", addressController);
 
 module.exports = app;
