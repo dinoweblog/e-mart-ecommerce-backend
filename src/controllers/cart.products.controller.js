@@ -8,7 +8,7 @@ const User = require("../models/user.model");
 
 const router = express.Router();
 
-router.get("/items", authenticate, async (req, res) => {
+router.post("/items", authenticate, async (req, res) => {
   try {
     const cart = await Cart.create(req.body);
 

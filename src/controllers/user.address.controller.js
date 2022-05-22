@@ -7,7 +7,7 @@ const Address = require("../models/user.address.model");
 
 const router = express.Router();
 
-router.get("/address", authenticate, async (req, res) => {
+router.post("/address", authenticate, async (req, res) => {
   try {
     const address = await Address.create(req.body);
 
