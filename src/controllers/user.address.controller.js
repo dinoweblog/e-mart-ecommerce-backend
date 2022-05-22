@@ -20,8 +20,11 @@ router.post("/address", authenticate, async (req, res) => {
 router.get("/address/:id", authenticate, async (req, res) => {
   try {
     const id = req.params.id;
+    const user = await User.findById(id).lean().exec();
 
-    const address = await Address.findOne({ userId: id }).lean().exec();
+    const user_id = user._id;
+
+    const address = await Address.find({ userId: user_id }).lean().exec();
 
     return res.send(address);
   } catch (err) {
