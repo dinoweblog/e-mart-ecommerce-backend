@@ -10,7 +10,7 @@ const router = express.Router();
 router.get("/women", async (req, res) => {
   try {
     const page = +req.query.page || 1;
-    const size = +req.query.size || 3;
+    const size = +req.query.size || 20;
     let search = req.query.search;
 
     const skip = (page - 1) * size;

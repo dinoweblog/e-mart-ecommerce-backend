@@ -22,7 +22,7 @@ router.get("/items/:id", authenticate, async (req, res) => {
     if (cart.length > 1) {
       for (let i = 0; i < cart.length; i++) {
         qty += cart[i].quantity;
-        const item = await Product.findById(cart[i]._id).lean().exec();
+        const item = await Product.findById(cart[i].productId).lean().exec();
         cartitems.push(item);
       }
     } else {
