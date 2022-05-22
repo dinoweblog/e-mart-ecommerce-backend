@@ -17,20 +17,17 @@ router.post("/address", authenticate, async (req, res) => {
   }
 });
 
-
 router.get("/address/:id", authenticate, async (req, res) => {
   try {
     const id = req.params.id;
 
-    const address = await Address.find({ userId: id }).lean().exec();
+    const address = await Address.findOne({ userId: id }).lean().exec();
 
     return res.send(address);
   } catch (err) {
     return res.status(500).send(err);
   }
 });
-
-
 
 router.delete("/address/delete/:id", authenticate, async (req, res) => {
   try {
@@ -55,6 +52,5 @@ router.patch("/address/update/:id", authenticate, async (req, res) => {
     return res.status(500).send({ error: err.message });
   }
 });
-
 
 module.exports = router;
