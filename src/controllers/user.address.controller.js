@@ -11,7 +11,7 @@ router.post("/address", authenticate, async (req, res) => {
   try {
     const address = await Address.create(req.body);
 
-    return res.send({ address });
+    return res.send(address);
   } catch (err) {
     return res.status(500).send(err);
   }
