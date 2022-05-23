@@ -51,7 +51,7 @@ router.patch("/address/update/:id", authenticate, async (req, res) => {
       .lean()
       .exec();
 
-    return res.status(201).send(address);
+    return res.status(201).send({ address });
   } catch (err) {
     return res.status(500).send({ error: err.message });
   }
