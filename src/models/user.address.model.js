@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const userAddressSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true },
+    userName: { type: String, required: true },
     mobile: { type: Number, required: true },
     pincode: { type: Number, required: true },
     address: { type: String, required: true },
