@@ -41,9 +41,13 @@ router.delete("/address/delete/:id", authenticate, async (req, res) => {
 
 router.patch("/address/update/:id", authenticate, async (req, res) => {
   try {
-    const address = await Address.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    })
+    const address = await Address.findOneAndUpdate(
+      { userId: req.params.id },
+      req.body,
+      {
+        new: true,
+      }
+    )
       .lean()
       .exec();
 
