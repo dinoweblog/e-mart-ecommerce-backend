@@ -31,7 +31,7 @@ router.get("/address/:id", authenticate, async (req, res) => {
 
 router.delete("/address/delete/:id", authenticate, async (req, res) => {
   try {
-    const address = await Address.findByIdAndDelete(req.params.id);
+    const address = await Address.findOneAndDelete({ userId: req.params.id });
 
     return res.status(201).send(address);
   } catch (err) {
