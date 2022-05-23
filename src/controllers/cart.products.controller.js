@@ -39,7 +39,8 @@ router.get("/items/:id", authenticate, async (req, res) => {
       }
     } else {
       qty = cart[0].quantity;
-      cartitems.push(cart[0]);
+      const item = await Product.findById(cart[0].productId).lean().exec();
+      cartitems.push(item);
     }
 
     return res.send({ qty, cartitems, itemQty, cart });
