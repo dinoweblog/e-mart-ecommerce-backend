@@ -54,7 +54,7 @@ router.delete("/items/delete/:id", authenticate, async (req, res) => {
   try {
     const cart = await Cart.findByIdAndDelete(req.params.id);
 
-    return res.status(201).send(cart);
+    return res.status(201).send({ cart });
   } catch (err) {
     return res.status(500).send({ error: err.message });
   }
@@ -68,7 +68,7 @@ router.patch("/items/update/:id", authenticate, async (req, res) => {
       .lean()
       .exec();
 
-    return res.status(201).send(cart);
+    return res.status(201).send({ cart });
   } catch (err) {
     return res.status(500).send({ error: err.message });
   }
