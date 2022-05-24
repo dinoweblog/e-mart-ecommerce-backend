@@ -37,7 +37,7 @@ router.get("/items/:id", authenticate, async (req, res) => {
         const item = await Product.findById(cart[i].productId).lean().exec();
         cartitems.push(item);
       }
-    } else {
+    } else if (cart.length === 1) {
       qty = cart[0].quantity;
       const item = await Product.findById(cart[0].productId).lean().exec();
       cartitems.push(item);
