@@ -67,16 +67,9 @@ router.get("/women/filter", async (req, res) => {
           products = await Product.find().lean().exec();
       }
     } else {
-      switch (disType) {
-        case 70:
-          products = await Product.find({ off: { $gte: 70 } })
-            .lean()
-            .exec();
-          break;
-
-        default:
-          products = await Product.find().lean().exec();
-      }
+      products = await Product.find({ off: { $gte: disType } })
+        .lean()
+        .exec();
     }
 
     return res.status(200).send({ products });
