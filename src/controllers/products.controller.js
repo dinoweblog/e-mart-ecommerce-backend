@@ -39,35 +39,26 @@ router.get("/women/filter", async (req, res) => {
   try {
     const filterType = req.query.category;
 
-    const page = +req.query.page || 1;
-    const size = +req.query.size || 20;
-
-    const skip = (page - 1) * size;
-
-    let products, totalPages;
+    let products;
     switch (filterType) {
       case "indian":
-        products = await Product.find({ category: "indian" })
-          .skip(skip)
-          .limit(size)
-          .lean()
-          .exec();
-        totalPages = Math.ceil((await Product.find().countDocuments()) / size);
+        products = await Product.find({ category: "indian" }).lean().exec();
         break;
       case "western":
-        products = await Product.find({ category: "western" })
-          .skip(skip)
-          .limit(size)
-          .lean()
-          .exec();
-        totalPages = Math.ceil((await Product.find().countDocuments()) / size);
+        products = await Product.find({ category: "western" }).lean().exec();
+        break;
+      case "sportsmaternity":
+        products = await Product.find({ category: "sports" }).lean().exec();
+        break;
+      case "maternity":
+        products = await Product.find({ category: "maternity" }).lean().exec();
         break;
 
       default:
         products = await Product.find().lean().exec();
     }
 
-    return res.status(200).send({ products, totalPages });
+    return res.status(200).send({ products });
   } catch (err) {
     return res.status(500).send(err.message);
   }
