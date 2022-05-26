@@ -37,7 +37,7 @@ router.get("/women", async (req, res) => {
 
 router.get("/women/filter", async (req, res) => {
   try {
-    const filterType = req.query.category;
+    const filterType = req.query.category || +req.query.discount;
 
     let products;
     switch (filterType) {
@@ -52,6 +52,11 @@ router.get("/women/filter", async (req, res) => {
         break;
       case "maternity":
         products = await Product.find({ category: "maternity" }).lean().exec();
+        break;
+      case 70:
+        products = await Product.find({ off: { $gte: 70 } })
+          .lean()
+          .exec();
         break;
 
       default:
