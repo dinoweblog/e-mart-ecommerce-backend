@@ -35,10 +35,32 @@ router.get("/women", async (req, res) => {
   }
 });
 
+router.get("/women/filter", async (req, res) => {
+  try {
+    const filterType = req.query.category;
+
+    let products;
+    switch (filterType) {
+      case "indian":
+        products = await Product.find({ category: "indian" }).lean().exec();
+        break;
+      case "western":
+        products = await Product.find({ category: "western" }).lean().exec();
+        break;
+
+      default:
+        products = await Product.find().lean().exec();
+    }
+
+    return res.status(200).send({ products });
+  } catch (err) {
+    return res.status(500).send(err.message);
+  }
+});
+
 router.post(
   "/create",
-  // authenticate,
-  // authorise(["admin"]),
+
   async (req, res) => {
     try {
       const product = await Product.create(req.body);
@@ -67,8 +89,7 @@ router.get(
 
 router.patch(
   "/update/:id",
-  // authenticate,
-  // authorise(["admin"]),
+
   async (req, res) => {
     try {
       const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
@@ -86,8 +107,7 @@ router.patch(
 
 router.delete(
   "/delete/:id",
-  // authenticate,
-  // authorise(["admin"]),
+
   async (req, res) => {
     try {
       const product = await Product.findByIdAndDelete(req.params.id);
