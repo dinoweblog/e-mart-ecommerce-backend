@@ -47,7 +47,7 @@ router.get("/women/filter", async (req, res) => {
       case "western":
         products = await Product.find({ category: "western" }).lean().exec();
         break;
-      case "sportsmaternity":
+      case "sports":
         products = await Product.find({ category: "sports" }).lean().exec();
         break;
       case "maternity":
