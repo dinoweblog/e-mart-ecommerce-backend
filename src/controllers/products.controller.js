@@ -37,30 +37,46 @@ router.get("/women", async (req, res) => {
 
 router.get("/women/filter", async (req, res) => {
   try {
-    const filterType = req.query.category || +req.query.discount;
+    const filterType = req.query.category;
+    const disType = +req.query.discount;
 
     let products;
-    switch (filterType) {
-      case "indian":
-        products = await Product.find({ category: "indian" }).lean().exec();
-        break;
-      case "western":
-        products = await Product.find({ category: "western" }).lean().exec();
-        break;
-      case "sports":
-        products = await Product.find({ category: "sports" }).lean().exec();
-        break;
-      case "maternity":
-        products = await Product.find({ category: "maternity" }).lean().exec();
-        break;
-      case 70:
-        products = await Product.find({ off: { $gte: 70 } })
-          .lean()
-          .exec();
-        break;
+    if (filterType) {
+      switch (filterType) {
+        case "indian":
+          products = await Product.find({ category: "indian" }).lean().exec();
+          break;
+        case "western":
+          products = await Product.find({ category: "western" }).lean().exec();
+          break;
+        case "sports":
+          products = await Product.find({ category: "sports" }).lean().exec();
+          break;
+        case "maternity":
+          products = await Product.find({ category: "maternity" })
+            .lean()
+            .exec();
+          break;
+        case 70:
+          products = await Product.find({ off: { $gte: 70 } })
+            .lean()
+            .exec();
+          break;
 
-      default:
-        products = await Product.find().lean().exec();
+        default:
+          products = await Product.find().lean().exec();
+      }
+    } else {
+      switch (disType) {
+        case 70:
+          products = await Product.find({ off: { $gte: 70 } })
+            .lean()
+            .exec();
+          break;
+
+        default:
+          products = await Product.find().lean().exec();
+      }
     }
 
     return res.status(200).send({ products });
