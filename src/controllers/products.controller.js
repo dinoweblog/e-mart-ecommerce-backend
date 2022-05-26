@@ -39,20 +39,35 @@ router.get("/women/filter", async (req, res) => {
   try {
     const filterType = req.query.category;
 
-    let products;
+    const page = +req.query.page || 1;
+    const size = +req.query.size || 20;
+
+    const skip = (page - 1) * size;
+
+    let products, totalPages;
     switch (filterType) {
       case "indian":
-        products = await Product.find({ category: "indian" }).lean().exec();
+        products = await Product.find({ category: "indian" })
+          .skip(skip)
+          .limit(size)
+          .lean()
+          .exec();
+        totalPages = Math.ceil((await Product.find().countDocuments()) / size);
         break;
       case "western":
-        products = await Product.find({ category: "western" }).lean().exec();
+        products = await Product.find({ category: "western" })
+          .skip(skip)
+          .limit(size)
+          .lean()
+          .exec();
+        totalPages = Math.ceil((await Product.find().countDocuments()) / size);
         break;
 
       default:
         products = await Product.find().lean().exec();
     }
 
-    return res.status(200).send({ products });
+    return res.status(200).send({ products, totalPages });
   } catch (err) {
     return res.status(500).send(err.message);
   }
