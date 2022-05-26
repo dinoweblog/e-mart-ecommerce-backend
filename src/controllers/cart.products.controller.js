@@ -60,6 +60,16 @@ router.delete("/items/delete/:id", authenticate, async (req, res) => {
   }
 });
 
+router.delete("/items/delete-all/:id", authenticate, async (req, res) => {
+  try {
+    const cart = await Cart.deleteMany({ userId: req.params.id });
+
+    return res.status(201).send({ cart });
+  } catch (err) {
+    return res.status(500).send({ error: err.message });
+  }
+});
+
 router.patch("/items/update/:id", authenticate, async (req, res) => {
   try {
     const cart = await Cart.findByIdAndUpdate(req.params.id, req.body, {

@@ -78,6 +78,29 @@ router.get("/women/filter", async (req, res) => {
   }
 });
 
+// router.get("/women/sorting", async (req, res) => {
+//   try {
+//     const sortBy = req.query.sort;
+
+//     let products;
+//     switch (sortBy) {
+//       case "asc":
+//         products = await Product.find({ category: "indian" }).lean().exec();
+//         break;
+//       case "dec":
+//         products = await Product.find({ category: "western" }).lean().exec();
+//         break;
+
+//       default:
+//         products = await Product.find().lean().exec();
+//     }
+
+//     return res.status(200).send({ products });
+//   } catch (err) {
+//     return res.status(500).send(err.message);
+//   }
+// });
+
 router.post(
   "/create",
 
