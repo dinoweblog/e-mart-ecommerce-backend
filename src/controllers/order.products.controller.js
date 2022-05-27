@@ -27,6 +27,7 @@ router.get("/your-order/:id", authenticate, async (req, res) => {
     let qty = 0;
     let orderitems = [];
     let itemQty = [];
+    let totalAmount = 0;
 
     const order = await Order.find({ userId: user_id }).lean().exec();
     console.log(order);
@@ -36,15 +37,17 @@ router.get("/your-order/:id", authenticate, async (req, res) => {
         qty += order[i].quantity;
         const item = await Product.findById(order[i].productId).lean().exec();
         orderitems.push(item);
+        totalAmount += item.newPrice * order[i].quantity;
       }
     } else if (order.length === 1) {
       qty = order[0].quantity;
       const item = await Product.findById(order[0].productId).lean().exec();
       orderitems.push(item);
       itemQty.push(qty);
+      totalAmount += item.newPrice * order[0].quantity;
     }
 
-    return res.send({ qty, orderitems, itemQty, order });
+    return res.send({ qty, orderitems, itemQty, order, totalAmount });
   } catch (err) {
     return res.status(500).send(err);
   }
@@ -59,6 +62,5 @@ router.delete("/your-order/cancel/:id", authenticate, async (req, res) => {
     return res.status(500).send({ error: err.message });
   }
 });
-
 
 module.exports = router;
