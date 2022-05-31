@@ -72,9 +72,11 @@ router.get("/items/find/:userId/:id", authenticate, async (req, res) => {
       .lean()
       .exec();
 
-    let check = "false";
+    let check;
 
     if (cart) {
+      check = "false";
+    } else {
       check = "true";
     }
 
