@@ -60,6 +60,30 @@ router.delete("/items/delete/:id", authenticate, async (req, res) => {
   }
 });
 
+router.get("/items/find/:userId/:id", authenticate, async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const prodId = req.params.id;
+    const user = await User.findById(userId).lean().exec();
+
+    const user_id = user._id;
+
+    const cart = await Cart.find({ userId: user_id, productId: prodId })
+      .lean()
+      .exec();
+
+    let check = "false";
+
+    if (cart) {
+      check = "true";
+    }
+
+    return res.send(check);
+  } catch (err) {
+    return res.status(500).send(err);
+  }
+});
+
 router.delete("/items/delete-all/:id", authenticate, async (req, res) => {
   try {
     const cart = await Cart.deleteMany({ userId: req.params.id });
