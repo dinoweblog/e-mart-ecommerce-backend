@@ -34,7 +34,7 @@ router.get("/search", async (req, res) => {
 
     if (search) {
       products = await Product.find({
-        name: { $regex: search, $options: "i" },
+        name: { $regex: ".*" + search + ".*", $options: "i" },
       })
         .lean()
         .exec();
