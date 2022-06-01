@@ -38,6 +38,8 @@ router.get("/search", async (req, res) => {
       })
         .lean()
         .exec();
+    } else {
+      products = [];
     }
 
     return res.status(200).send({ products });
