@@ -21,11 +21,13 @@ router.get("/women", async (req, res) => {
 
       totalPages = Math.ceil((await Product.find().countDocuments()) / size);
     } else {
-      products = await Product.find({ name: search })
-        .skip(skip)
-        .limit(size)
-        .lean()
-        .exec();
+      const query = { $text: { $search: search } };
+
+      const projection = {
+        _id: 0,
+        title: 1,
+      };
+      products = await Product.find(query).project(projection);
       totalPages = Math.ceil((await Product.find().countDocuments()) / size);
     }
 
