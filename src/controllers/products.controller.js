@@ -22,7 +22,7 @@ router.get("/women", async (req, res) => {
       totalPages = Math.ceil((await Product.find().countDocuments()) / size);
     } else {
       products = await Product.find({
-        name: { $regex: ".*" + search + ".*" },
+        name: { $regex: ".*" + search + ".*", $options: "i" },
       })
         .skip(skip)
         .limit(size)
