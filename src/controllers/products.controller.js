@@ -11,16 +11,28 @@ router.get("/women", async (req, res) => {
   try {
     const page = +req.query.page || 1;
     const size = +req.query.size || 20;
-    let search = req.query.search;
 
     const skip = (page - 1) * size;
 
     let products, totalPages;
-    if (!search) {
-      products = await Product.find().skip(skip).limit(size).lean().exec();
 
-      totalPages = Math.ceil((await Product.find().countDocuments()) / size);
-    } else {
+    products = await Product.find().skip(skip).limit(size).lean().exec();
+
+    totalPages = Math.ceil((await Product.find().countDocuments()) / size);
+
+    return res.status(200).send({ products, totalPages });
+  } catch (err) {
+    return res.status(500).send(err.message);
+  }
+});
+
+router.get("/search", async (req, res) => {
+  try {
+    let search = req.query.search;
+
+    let products;
+
+    if (search) {
       products = await Product.find({
         name: { $regex: search, $options: "i" },
       })
@@ -28,7 +40,7 @@ router.get("/women", async (req, res) => {
         .exec();
     }
 
-    return res.status(200).send({ products, totalPages });
+    return res.status(200).send({ products });
   } catch (err) {
     return res.status(500).send(err.message);
   }
